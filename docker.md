@@ -131,7 +131,7 @@
     * Step 1: Run a container with a name
     * Step 2: Link to running container by name
     * Step 3: Repeat for additional container
-    <br/>
+    <br/><br/>
     
     > $ docker run -d --name my-postgres postgres
     <br/>
