@@ -3,6 +3,7 @@
 ## Docker Machine
 
 * > $ docker-machine ls
+
     List all docker machines. The *default* one is the one on your local development laptop.
     
         NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
@@ -15,6 +16,7 @@
 
 
 * > $ docker-machine ip default
+
     Determine the ip of a docker machine.
     
         192.168.99.100
