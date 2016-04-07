@@ -2,10 +2,12 @@
 
 ## Docker Machine
 
-`$ docker-machine ls`
+    List all docker machines. The default one is the one on your local development laptop.
+
+> $ docker-machine ls
 
 
-We use this for that.
+    We use this for that.
 
 > $ docker-machine stop default
 
