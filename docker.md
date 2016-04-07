@@ -136,7 +136,8 @@
     > $ docker run -d --name my-postgres postgres
     <br/>
     > $ docker run -d -p 5000:5000 --link my-postgres:postgres danwahlin/aspnetcore
-    <br/>
+    
+    
     Linking **node.js** container and **mongodb** container
     
     > $ docker build -f node.dockerfile -t danwahlin/node .
