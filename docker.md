@@ -37,13 +37,32 @@
     
 
 ## Docker Client
-    
-* > $ docker ps
-
-* > $ docker ps -a
 
 * > $ docker run -d -p 3000:80 kitematic/hello-world
 
     The `docker run` command spins off a running container out of a Docker Image.
-    * The `-p` flag exposes port 80 on the Docker Container to port 3000 on the Docker Machine
+    * The `-p` flag exposes port 80 on the **Docker Container** to port 3000 on the **Docker Machine**
     * The `-d` flag runs the container in detached mode
+
+
+* > $ docker ps
+
+
+* > $ docker ps -a
+
+
+* > $ docker stop 0b34
+
+
+* > $ docker rm 0b34
+
+
+* > $ docker images
+
+
+* > $ docker images -a
+
+
+* > $ docker rmi 32de
+
+
