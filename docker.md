@@ -205,15 +205,12 @@ networks:
 
 
 * > $ docker-compose build
-<br/>
 * > $ docker-compose build mongo
 
 * > $ docker-compose up -d
-<br/>
 * > $ docker-compose up --no-deps node
 
 * > $ docker-compose down
-<br/>
 * > $ docker-compose down --rmi all --volumes
 
 * > $ docker-compose logs
