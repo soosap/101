@@ -2,16 +2,16 @@
 
 ## Docker Machine
 
-```shell
-
-$ docker-machine ls
-
-docker-machine stop default
-
-docker-machine start default
-
-docker-machine ip default
+`$ docker-machine ls`
 
 
+We use this for that.
+`docker-machine stop default`
 
-```
+Hello
+`docker-machine start default`
+
+
+World
+`docker-machine ip default`
+
