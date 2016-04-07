@@ -131,17 +131,18 @@
     * Step 1: Run a container with a name
     * Step 2: Link to running container by name
     * Step 3: Repeat for additional container
+    <br><br/>
     
     > $ docker run -d --name my-postgres postgres
-    
+    <br>
     > $ docker run -d -p 5000:5000 --link my-postgres:postgres danwahlin/aspnetcore
     
     Linking node.js container and mongodb container
     
     > $ docker build -f node.dockerfile -t danwahlin/node .
-    
+    <br>
     > $ docker run -d --name my-mongodb mongo
-    
+    <br>
     > $ docker run -d -p 3000:3000 --link my-mongodb:mongodb danwahlin/node
     
 
