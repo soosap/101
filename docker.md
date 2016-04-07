@@ -2,7 +2,7 @@
 
 ## Docker Machine
 
-List all docker machines. The default one is the one on your local development laptop.
+* List all docker machines. The *default* one is the one on your local development laptop.
 
 > $ docker-machine ls
     
@@ -15,7 +15,7 @@ List all docker machines. The default one is the one on your local development l
 > $ docker-machine start default
 
 
-Determine the ip of a docker machine.
+* Determine the ip of a docker machine.
 > $ docker-machine ip default
     
     192.168.99.100
