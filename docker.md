@@ -165,12 +165,15 @@
     * Step 1: Create custom bridge network
     
         > $ docker network create --driver bridge isolated_network_name
+        <br/>
         > $ docker network ls
+        <br/>
         > $ docker network inspect isolated_network_name
      
     * Step 2: Run containers in the network (no more --link)
     
         > $ docker run -d --net=isolated_network_name --name mongodb mongo
+        <br/>
         > $ docker run -d --net=isolated_network_name --name nodeapp -p 3000:3000 danwahlin/node
         
     
