@@ -68,7 +68,16 @@
 * > $ docker rmi 32de
 
 
-### How to get source code into a container?
+* > $ docker build -t saronia/saronia-frontend -f Dockerfile.nginx .
+
+    * The `-t` flag specifies tags for the image build
+    * The `-f` flag specifies a non-standard Dockerfile path and/or name
+    * The `.` represents the build context
+    <br><br/>
+
+
+
+#### How to get source code into a container?
 
 1. Create a container volume that points to the source code (development)
 
@@ -84,9 +93,15 @@
     
     > $ docker run -p 8080:3000 -v /var/www
     
-    Moreover, instead of leaving it to the Docker Host to decide, we could explicitly specify that storage location. 
+    Moreover, instead of leaving it to the Docker Host to decide, we could explicitly specify that storage location: 
     
     > $ docker run -p 8080:3000 -v $(pwd):/var/www node
+    
+    When executing commands on container initialization they will be run from the container's home directory.
+    We can change the working directory from where a command shall be executed using the `-w` flag.
+    
+    > $ docker run -p 8080:3000 -v $(pwd):/var/www -w "/var/www" node npm start
 
 2. Add your source code into a custom image that is used to create a container (staging/production)
 
+    Build an image from a Dockerfile.
