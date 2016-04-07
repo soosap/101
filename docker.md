@@ -43,7 +43,7 @@
     The `docker run` command spins off a running container out of a Docker Image.
     * The `-p` flag exposes port 80 on the **Docker Container** to port 3000 on the **Docker Machine**
     * The `-d` flag runs the container in detached mode
-    &nbsp;&nbsp;&nbsp;&nbsp;
+    <br><br/>
 
 * > $ docker ps
 
