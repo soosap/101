@@ -86,6 +86,11 @@
 * > $ docker pull saronia/saronia-frontend:latest
 
 
+* > $ docker exec d6er4 node dbSeeder.js
+
+    Execute a command on a running container
+
+
 
 #### How to get source code into a container?
 
@@ -133,11 +138,7 @@
     * Step 3: Repeat for additional container
     <br/><br/>
     
-    > $ docker run -d --name my-postgres postgres
-    <br/>
-    > $ docker run -d -p 5000:5000 --link my-postgres:postgres danwahlin/aspnetcore
-    
-    
+     
     Linking **node.js** container and **mongodb** container
     
     > $ docker build -f node.dockerfile -t danwahlin/node .
@@ -145,14 +146,33 @@
     > $ docker run -d --name my-mongodb mongo
     <br/>
     > $ docker run -d -p 3000:3000 --link my-mongodb:mongodb danwahlin/node
+   
+    
+    Linking **ASP.NET** container and **postgres** container
+    
+    > $ docker build -f aspnetcore.dockerfile -t danwahlin/aspnetcore .
+    <br/>
+    > $ docker run -d --name my-postgres -e POSTGRES_PASSWORD=password postgres
+    <br/>
+    > $ docker run -d -p 5000:5000 --link my-postgres:postgres danwahlin/aspnetcore
     
 
 2. Bridge networking (new)
 
-    * Only containers in that bridge can communicate with each other
+    * Only containers in a particular bridge can communicate with each other
+    * Containers can be grouped into an isolated network so that container communication is restricted
     
-
+    * Step 1: Create custom bridge network
     
+        > $ docker network create --driver bridge isolated_network_name
+        > $ docker network ls
+        > $ docker network inspect isolated_network_name
+     
+    * Step 2: Run containers in the network (no more --link)
+    
+        > $ docker run -d --net=isolated_network_name --name mongodb mongo
+        > $ docker run -d --net=isolated_network_name --name nodeapp -p 3000:3000 danwahlin/node
+        
     
 ## Docker Compose
 
