@@ -121,6 +121,35 @@
     * ENV
     * RUN
     * ENTRYPOINT
+
+    
+#### How do containers communicate w/ each other?
+
+1. Legacy linking (old)
+
+    * Simple technique by name referencing
+    * Step 1: Run a container with a name
+    * Step 2: Link to running container by name
+    * Step 3: Repeat for additional container
+    
+    > $ docker run -d --name my-postgres postgres
+    
+    > $ docker run -d -p 5000:5000 --link my-postgres:postgres danwahlin/aspnetcore
+    
+    Linking node.js container and mongodb container
+    
+    > $ docker build -f node.dockerfile -t danwahlin/node .
+    
+    > $ docker run -d --name my-mongodb mongo
+    
+    > $ docker run -d -p 3000:3000 --link my-mongodb:mongodb danwahlin/node
+    
+
+2. Bridge networking (new)
+
+    * Only containers in that bridge can communicate with each other
+    
+
     
     
 ## Docker Compose
