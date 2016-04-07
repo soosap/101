@@ -186,17 +186,44 @@
 version: '2'
 
 services:
+    node:
+        build:
+            context: .
+            dockerfile: node.dockerfile
+        networks:
+            - nodeapp-network
+    mongodb:
+        image: mongo
+        networks:
+            - nodeapp-network
 
-
-
-
+networks:
+    nodeapp-network
+        driver: bridge
 
 ```
 
-
 * > $ docker-compose build
+<br/>
+* > $ docker-compose build mongo
 
 * > $ docker-compose up -d
+<br/>
+* > $ docker-compose up --no-deps node
+
+* > $ docker-compose down
+<br/>
+* > $ docker-compose down --rmi all --volumes
+
+* > $ docker-compose logs
+
+* > $ docker-compose ps
+
+* > $ docker-compose stop
+
+* > $ docker-compose start
+
+* > $ docker-compose rm
 
 
 ## Docker Swarm
