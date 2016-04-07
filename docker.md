@@ -198,10 +198,11 @@ services:
             - nodeapp-network
 
 networks:
-    nodeapp-network
+    nodeapp-network:
         driver: bridge
 
 ```
+
 
 * > $ docker-compose build
 <br/>
