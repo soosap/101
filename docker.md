@@ -45,6 +45,7 @@
     * The `-d` flag runs the container in detached mode
 
 
+
 * > $ docker ps
 
 
