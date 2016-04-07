@@ -6,7 +6,8 @@
 
 
 We use this for that.
-`docker-machine stop default`
+
+> $ docker-machine stop default
 
 Hello
 
