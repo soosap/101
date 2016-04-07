@@ -200,11 +200,11 @@ services:
 networks:
     nodeapp-network:
         driver: bridge
-
 ```
 
 
 * > $ docker-compose build
+
 * > $ docker-compose build mongo
 
 * > $ docker-compose up -d
