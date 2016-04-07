@@ -136,7 +136,7 @@
     * Step 1: Run a container with a name
     * Step 2: Link to running container by name
     * Step 3: Repeat for additional container
-    <br/><br/>
+    <br/>
     
      
     Linking **node.js** container and **mongodb** container
@@ -179,7 +179,24 @@
     
 ## Docker Compose
 
+#### docker-compose.yml
 
+```yaml
+---
+version: '2'
+
+services:
+
+
+
+
+
+```
+
+
+* > $ docker-compose build
+
+* > $ docker-compose up -d
 
 
 ## Docker Swarm
