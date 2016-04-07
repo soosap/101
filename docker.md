@@ -38,11 +38,15 @@
 
 ## Docker Client
 
-* > $ docker run -d -p 3000:80 kitematic/hello-world
+* > $ docker run -d -p 3000:80 -v /var/www --name mycontainer kitematic/hello-world
 
     The `docker run` command spins off a running container out of a Docker Image.
     * The `-p` flag exposes port 80 on the **Docker Container** to port 3000 on the **Docker Machine**
     * The `-d` flag runs the container in detached mode
+    * The `-v` flag specifies a volume, i.e. a special directory on the container that stores its containing data on the
+    container's Docker Host. We could use `$ docker inspect mycontainer` and look under "Mounts" to learn about where on 
+    the Docker Host the directory is being mounted (or stored).
+    * The `--name` flag labels the container
     <br><br/>
 
 * > $ docker ps
@@ -51,10 +55,10 @@
 * > $ docker ps -a
 
 
-* > $ docker stop 0b34
+* > $ docker stop mycontainer
 
 
-* > $ docker rm 0b34
+* > $ docker rm mycontainer
 
 
 * > $ docker images
@@ -65,4 +69,15 @@
 
 * > $ docker rmi 32de
 
+
+How to get source code into a container?
+
+1. Create a container volume that points to the source code (development)
+
+    A volume is just a special type of directory in a container typically referred to as a *data volume*. They can be
+    shared and reused among multiple containers. Likewise, we could just have a single container associated with one
+    or more volumes. Importantly, updates to an image won't affect a data volume. Data volumes are persisted even after
+    the container is deleted.
+
+2. Add your source code into a custom image that is used to create a container (staging/production)
 
