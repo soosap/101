@@ -68,12 +68,22 @@
 * > $ docker rmi 32de
 
 
-* > $ docker build -t saronia/saronia-frontend -f Dockerfile.nginx .
+* > $ docker build -t saronia/saronia-frontend -f Dockerfile.nginx --no-cache .
 
     * The `-t` flag specifies tags for the image build
     * The `-f` flag specifies a non-standard Dockerfile path and/or name
+    * The `--no-cache` would build the container from scratch w/o leveraging the cache
     * The `.` represents the build context
     <br><br/>
+
+
+$ > $ docker login
+
+
+* > $ docker push saronia/saronia-frontend:latest
+
+
+* > $ docker pull saronia/saronia-frontend:latest
 
 
 
