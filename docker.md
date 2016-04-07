@@ -77,7 +77,7 @@
     <br><br/>
 
 
-$ > $ docker login
+* > $ docker login -e soosap@saronia.io -p secret -u username
 
 
 * > $ docker push saronia/saronia-frontend:latest
@@ -115,3 +115,18 @@ $ > $ docker login
 2. Add your source code into a custom image that is used to create a container (staging/production)
 
     Build an image from a Dockerfile.
+    
+    * FROM
+    * MAINTAINER
+    * ENV
+    * RUN
+    * ENTRYPOINT
+    
+    
+## Docker Compose
+
+
+
+
+## Docker Swarm
+
