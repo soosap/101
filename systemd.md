@@ -24,23 +24,20 @@ $ systemctl disable consul
 # Manually start consul server
 $ systemctl start consul
 
-# Check the status of the consul startup script.
-# Useful for debugging; spits out logs.
+# Check status of consul service
 $ systemctl status consul
 
 # More thorough logs on a particular unit can be obtained using journalctl
 $ journalctl -u consul
 
-# show the 100 latest lines of logs
+# Show the 100 latest lines of logs of the consul service
 $ journalctl -an100 -u consul
 
-# Last overall logs
+# Show all journal logs in reverse order (latest first)
 $ journalctl -xe
 
 # Show all readable properties of the service
 $ sytemctl show consul
-
-
 ```
 
 
