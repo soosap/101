@@ -206,6 +206,14 @@ Write logic that depends on the return code of a particular command.
 
 The logical `AND` and `OR` both rely on the concept of the return code. You can chain together multiple commands.
 
+### $_
+
+The `$_` returns the output of the previously executed command.
+
+```sh
+git clone https://github.com/soosap/101.git 101 && cd $_
+```
+
 
 ### Exit command
 
@@ -222,6 +230,86 @@ fi
 exit 0
 ```
 
+## Functions
+
+```sh
+function hello() {
+	echo "Hello!"
+}
+
+# Call the function. Note that we are not putting parenthesis.
+hello
+```
+```sh
+# Functions may also call other functions
+
+function hello() {
+	echo "hello"
+	now
+}
+
+function now() {
+	echo "It's $(date +%r)"
+}
+
+hello
+```
+
+```sh
+# Functions can also accept parameters and return Exit Codes.
+
+function hello() {
+	echo "Hello $1"
+}
+
+hello Seetha
+hello Dugorim
+# >> Hello Seetha
+# >> Hello Dugorim
+
+function hi() {
+	for NAME in $@
+	do
+		echo "Hi ${NAME}!"
+	done
+	return 0
+}
+
+hi Seetha Dugorim Sapiras
+# >> Hi Seetha
+# >> Hi Dugorim
+# >> Hi Sapiras
+```
+### Example: function backup_file
+
+```sh
+function backup_file() {
+	if [ -f $1 ]
+	then
+		local BACK="/tmp/$(basename ${1}).$(date +%F).$$"
+		echo "Backing up $1 to ${BACK}"
+
+		cp $1 $BACK
+		# Note: that the exit status of the function will be the exit status of the cp command.
+	else
+		# The file does not exist. Therefore return a non-zero exit status.
+		return 1
+	fi
+}
+
+# Execute backup_file function
+backup_file /etc/hosts
+if [ $? -eq 0 ]
+then
+	echo "Backup succeeded!"
+fi
+
+```
+* By default variables specified anywhere are **global** unless you add the `local` keyword. The keyword can only be added inside functions. It's added in front of the `BACK` variable's first occurence.
+* The `[ -f $1 ]` test checks whether the first argument is a file and also whether it exists.
+* The `basename` command removes any leading directory components and returns just the filename. The basename of `/etc/hosts` is just `hosts`.
+* The `date` command is using a nice format of year-month-day all separated by dashes.
+* `$$` represents the `pid` (process id) of the currently running shell script. It can be used to protect backups when running the same script multiple times on the same day. Every time the script is run a new unique `pid` will be assigned and thus backups won't be overwritten.
 
 
 
