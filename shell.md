@@ -312,6 +312,78 @@ fi
 * `$$` represents the `pid` (process id) of the currently running shell script. It can be used to protect backups when running the same script multiple times on the same day. Every time the script is run a new unique `pid` will be assigned and thus backups won't be overwritten.
 
 
+## Wildcards (Globbing)
+
+* `*` - matches zero or more characters
+	* `*.txt`
+	* `a*`
+	* `a*.txt`
+* `?` - matches exactly one character
+	* `?.txt` - match all files that have exactly one character preceding `.txt`
+	* `a?` - match all 2 character files that begin with an `a`
+	* `a?.txt`
+* `[]` - a character class
+	* matches any of the characters included between the brackets
+	* matches exactly one character
+	* `[aeiou]` - matches exactly one vowel
+	* `ca[nt]*`
+		* can
+		* cat
+		* candy
+		* catch
+* `[!]` - a negative character class
+	* matches any of the characters NOT included between the brackets
+	* matches exactly one character
+	* [!aeiou]* - matches any word that does not start with a vowel
+		* baseball
+		* cricket
+* `[a-g]` - wildcard range
+	* a, b, c, d, e, f, or g
+* `[3-6]` - another wildcard range
+	* 3, 4, 5, or 6
+* Named Character Classes
+	* `[[:alpha:]]`
+	* `[[:alnum:]]`
+	* `[[:digit:]]`
+	* `[[:lower:]]`
+	* `[[:space:]]`
+	* `[[:upper:]]`
+* `\` - match a wildcard character by escaping it
+	* use if you want to match a wildcard character
+	* `*\?` - match all files that end with a question mark
+		* done?
+
+### Example: Using wildcards in a for-loop
+
+```sh
+#!/bin/bash
+
+cd /var/www
+for FILE in *.html
+do
+	echo "Copying ${FILE}"
+	cp $FILE /var/www-just-html
+done
+
+# >> Copying about.html
+# >> Copying contact.html
+# >> Copying index.html
+```
+```sh
+#!/bin/bash
+
+for FILE in /var/www/*.html
+do
+	echo "Copying ${FILE}"
+	cp $FILE /var/www-just-html
+done
+
+# >> Copying /var/www/about.html
+# >> Copying /var/www/contact.html
+# >> Copying /var/www/index.html
+```
+
+
 
 
 
