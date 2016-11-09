@@ -407,7 +407,7 @@ esac
 * Pattern is case-sensitive, i.e. `START` !== `start`
 * The `*)` will act as a catch-all and match anything else
 * Use the `|` symbol to allow both `STOP` and `stop`
-* `;;` is equivalent to `break` in Javascript
+* Once a pattern has been matched, the commands following that pattern are executed until the `;;` is reached. It is equivalent to `break` in Javascript. 
 
 
 ### Example 2
@@ -426,5 +426,50 @@ esac
 * You can use **wildcards** and **character classes**
 
 
+## Logging
+
+### syslog
+
+* The syslog standard uses **facilities** and **severities** to categorize messages
+	* Facilities: kern, user, mail, deamon, auth, local0, local7
+	* Severities: emerg, alert, crit, err, warning, notice, info, debug
+* Log file locations are configurable:
+	* /var/log/messages
+	* /var/log/syslog
+
+### Logging w/ logger
+
+* The logger utility
+* By default creates `user.notice` messages
+* `logger "Message"`
+* `logger -p local0.info "Message"`
+* `logger -t myscript -p local0.info "Message"` - use `-t` to additionally print a tag next to the log message
+* `logger -t myscript -s -p local0.info "Message"` - use the `-s` option to not only log the message to a file but also to display it on the screen
+* `logger -i -t myscript "Message"` - use `-i` to additionally print the process id (pid)
+	* `Nov 11 01:22:53 soosap myscript[12986]: Message`
+
+### Custom "logit" function
+
+```sh
+function logit() {
+	local LOG_LEVEL=$1
+	shift
+	MSG=$@
+	TIMESTAMP=$(date +"%Y-%m-%d %T")
+
+	if [ $LOG_LEVEL = 'ERROR' ] || $VERBOSE
+	then
+		echo "${TIMESTAMP} ${HOST} ${PROGRAM_NAME} [${PID}]: ${LOG_LEVEL} ${MSG}"
+	fi
+}
+```
+```sh
+logit INFO "Game over. Something went bad."
+```
+* The `shift` key word shifts the positional parameters to the left. This means that the special variable `$@` contains everything except the first parameter which has already been used prior calling `shift`. That's how it is possible that `$@` equates to the second argument and everything that follows there after.
+* Rather than `echo` we could have used `logger` instead.
+
+
+## While-loop
 
 
