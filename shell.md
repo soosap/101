@@ -384,6 +384,47 @@ done
 ```
 
 
+## Case statement
+
+### Example 1
+
+```sh
+case "$1" in
+	start)
+		/usr/sbin/sshd
+		;;
+	stop|STOP)
+		kill $(cat /var/run/sshd.pid)
+		;;
+	*)
+		echo "Usage: $0 start|stop" ; exit 1
+		;;
+esac
+```
+
+* This case statement examines the value of `$1`
+* `$1` is the first argument provided to the shell script
+* Pattern is case-sensitive, i.e. `START` !== `start`
+* The `*)` will act as a catch-all and match anything else
+* Use the `|` symbol to allow both `STOP` and `stop`
+* `;;` is equivalent to `break` in Javascript
+
+
+### Example 2
+
+```sh
+read -p "Enter y or n: " ANSWER
+case "$ANSWER" in
+	[yY]*)
+		echo "You voted yes."
+		;;
+	*)
+		echo "You answered something else."
+		;;
+esac
+```
+* You can use **wildcards** and **character classes**
+
 
 
 
