@@ -407,7 +407,7 @@ esac
 * Pattern is case-sensitive, i.e. `START` !== `start`
 * The `*)` will act as a catch-all and match anything else
 * Use the `|` symbol to allow both `STOP` and `stop`
-* Once a pattern has been matched, the commands following that pattern are executed until the `;;` is reached. It is equivalent to `break` in Javascript. 
+* Once a pattern has been matched, the commands following that pattern are executed until the `;;` is reached.
 
 
 ### Example 2
@@ -471,5 +471,130 @@ logit INFO "Game over. Something went bad."
 
 
 ## While-loop
+
+### Examples
+
+#### Example: Infinite loop
+```sh
+while true do
+	command N
+	sleep 1
+done
+```
+* Make the condition always return true
+* This can be used when starting the shell script in daemon mode
+
+#### Example: Repeat X times
+```sh
+INDEX=1
+while [ $INDEX -lt 6 ]; do
+	echo "Creating project-${INDEX}"
+	mkdir /usr/local/project-${INDEX}
+	((INDEX++))
+done
+```
+* Control the number of time how often a script is executed
+* Use `((INDEX++))` to increment the iterator
+
+#### Example: Check user input
+```sh
+while [ "$CORRECT" != "y" ]
+do
+	read -p "Enter your name: " NAME
+	read -p "Is ${NAME} correct? " CORRECT
+done
+```
+* Use while-loop to check user input
+* Snippet is repeated until the user confirms with `y`
+
+#### Example: Return Code of Command
+```sh
+while ping -c 1 app1 > /dev/null; do
+	echo "app1 still up..."
+	sleep 5
+done
+
+echo "app1 down, continuing..."
+```
+* In the above example we want to execute some type of backup or maintenance tasks on a particular database server. Before we issue our commands though we want to wait until the application server is off the network so that there are no pending write operations.
+* We redirect the `STDOUT` of the ping command to `/dev/null` such that it is not displayed on the screen. The reason being that we are not actually interested in the output itself, but rather whether or not the command has been executed with return code zero.
+* `-c` flag specifies that only one packet should be sent
+
+#### Example: Read file line-by-line
+```sh
+LINE_NUM=1
+while read LINE
+do
+	echo "${LINE_NUM}: ${LINE}"
+	((LINE_NUM++))
+done < /etc/fstab
+```
+* In this case, `/etc/fstab` is the file we want to parse.
+* We use the `LINE_NUM` variable to keep track of the line numbers.
+
+#### Example: Read output of command line-by-line
+```sh
+grep xfs /etc/fstab | while read LINE
+do
+	echo "xfs: ${LINE}"
+done
+```
+
+```sh
+FS_NUM=1
+grep xfs /etc/fstab | while read FS MP REST
+do
+	echo "${FS_NUM}: file system: ${FS}"
+	echo "${FS_NUM}: mount point: ${MP}"
+	((FS_NUM++))
+done
+```
+* We deconstruct a line into three pieces:
+	* the first word (FS)
+	* the second word (MP)
+	* and everything that follows thereafter (REST)
+* Keep track of the current line number by incrementing the `FS_NUM` variable
+
+
+### "break"-statement
+
+```sh
+while true
+do
+	read -p "1: Show disk usage. 2: Show uptime. " CHOICE
+	case "$CHOICE" in
+		1)
+			df -h
+			;;
+		2) uptime
+			;;
+		*)
+			break
+			;;
+	esac
+done
+```
+* Use the `break` statement to exit a while-loop before its normal ending
+* `break` can be used with any type of loop, i.e. for-loop
+
+### "continue"-statement
+
+```sh
+mysql -BNe 'show databases' | while read DB
+do
+	db-backed-up-recently $DB
+	if [ "$?" -eq "0" ]
+	then
+		continue
+	fi
+
+	# Only if not backed up recently, execute this:
+	backup $DB
+done
+```
+* Restart the loop at the next iteration before the loop completes using the `continue` statement
+* Any commands that follow the `continue` statement in the loop will not be executed
+* Execution continues back at the top of the loop and the while condition is examined again
+
 
 
