@@ -577,6 +577,7 @@ done
 * Use the `break` statement to exit a while-loop before its normal ending
 * `break` can be used with any type of loop, i.e. for-loop
 
+
 ### "continue"-statement
 
 ```sh
@@ -597,4 +598,169 @@ done
 * Execution continues back at the top of the loop and the while condition is examined again
 
 
+## Debugging
 
+### `-x` trace
+
+#### Entire file
+```sh
+#!/bin/bash -x
+
+TEST_VAR="test"
+echo "$TEST_VAR"
+
+# >> + TEST_VAR=test
+# >> + echo test
+# >> test
+```
+* The `#!/bin/bash -x` specifies that `-x`-trace shall be applied to the entire file
+* The lines that start with a `+` sign are the commands that have been executed from the script
+* Right after follows the actual output from executing a particular command
+* Thus, the output is mapped to the respective command producing it
+
+#### Portion of file
+```sh
+#!/bin/bash
+
+TEST_VAR="test"
+set -x
+echo $TEST_VAR
+set +x
+hostname
+
+# >> + echo test
+# >> test
+# >> + set +x
+# >> myhostname
+```
+* Set `-x` debugging on a portion of the script
+	* Use `set -x` to indicate where from where after to enable debugging
+	* Use `set +x` to indicate from where after to deactivate debugging
+
+
+### `-e` exit-on-error
+
+* `#!/bin/bash -ex`
+* `#!/bin/bash -xe`
+* `#!/bin/bash -e -x`
+* `#!/bin/bash -x -e`
+
+The exit-on-error `-e` flag can be combined with other options such as the `-x`-trace.
+
+```sh
+#!/bin/bash -ex
+
+FILE_NAME="/not/here"
+ls ${FILE_NAME}
+echo ${FILE_NAME}
+
+# >> + FILE_NAME=/not/here
+# >> + ls /not/here
+# >> ls: cannot access /not/here: No such file or directory
+```
+* `-e` can help to exactly pinpoint where an actual problem may be
+* Due to `ls` returning w/ a non-zero return code the `echo` command is never executed
+
+### `-v` trace
+
+```sh
+#!/bin/bash -v
+TEST_VAR="test"
+echo "$TEST_VAR"
+
+# >> #!/bin/bash -v
+# >> TEST_VAR="test"
+# >> echo "$TEST_VAR"
+# >> test
+```
+
+```sh
+#!/bin/bash -vx
+TEST_VAR="test"
+echo "$TEST_VAR"
+
+# >> #!/bin/bash -v
+# >> TEST_VAR="test"
+# >> + TEST_VAR=test 
+# >> echo "$TEST_VAR"
+# >> + echo test
+# >> test
+```
+* Prints shell input lines as they are read
+* Can be combined w/ other options
+* `-v` prints before any substitutions or expansions have occurred
+
+
+### Manual Debugging
+
+* `DEBUG=true`
+* `DEBUG=false`
+
+```sh
+#!/bin/bash
+DEBUG=true
+if $DEBUG
+then
+	echo "Debug mode is ON."
+else
+	echo "Debug mode is OFF."
+fi
+```
+
+```sh
+#!/bin/bash
+DEBUG=true
+$DEBUG && echo "Debug mode is ON."
+```
+
+```sh
+#!/bin/bash
+DEBUG=false
+$DEBUG || echo "Debug mode is OFF."
+```
+
+#### Custom debug function
+```sh
+#!/bin/bash
+
+function debug() {
+	echo "Executing: $@"
+	$@
+}
+
+debug ls
+```
+* `echo` name of the command to the screen
+* One could use logging instead of printing to the screen
+
+#### PS4 Syntax Highlighting
+
+```sh
+#!/bin/bash -x
+PS4='+ $BASH_SOURCE : $LINENO :'
+TEST_VAR="test"
+echo "$TEST_VAR"
+
+# >> + PS4='+ $BASH_SOURCE : $LINENO :'
+# >> + ./test.sh : 3 : TEST_VAR=test
+# >> + ./test.sh : 4 : echo test
+# >> test
+```
+* Declare `PS4` variable to format the `-x` trace screen output
+* By default `x` trace is indicated using the `+` sign in front of commands
+* The `-x` trace output format deviates from its default after an explicit `PS4` has been set
+* The output may be altered to further expose `$BASH_SOURCE` and `$LINENO`
+
+```sh
+#!/bin/bash -x
+PS4='+ ${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}()'
+
+function debug() {
+	echo "Executing: $@"
+	$@
+}
+
+debug ls
+
+# >> + /test.sh:4:debug(): ls
+```
