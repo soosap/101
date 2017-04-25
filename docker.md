@@ -131,24 +131,10 @@ $ docker volume ls -qf dangling=true | xargs docker volume rm
 4) Update services in a docker swarm
 
 ---------------------------------------------
-* | Create swarm nodes w/ docker-machine
+### | Create swarm nodes w/ docker-machine
 ---------------------------------------------
 
-Install a particular version of the docker engine on a particular docker machine
-$ docker-machine ssh dugorim
-$ sudo -i
-$ apt-cache policy docker-engine
-$ apt-get install docker-engine=1.12.2-0~wily
-$ apt-get install docker-engine=1.12.0-0~wily
-$ apt-get install docker-engine=1.12.2~rc3-0~wily
-
-
----------------------------------------------
-* | Instantiate soon to become swarm nodes
----------------------------------------------
-
-$ docker-machine upgrade karthik sapiras
-
+```sh
 $ docker-machine create --driver amazonec2 --amazonec2-region eu-central-1 --amazonec2-zone a --engine-install-url https://experimental.docker.com/ sapiras
 
 $ docker-machine create --driver amazonec2 --amazonec2-region eu-central-1 --amazonec2-zone a --engine-install-url https://experimental.docker.com/ seetha
@@ -159,6 +145,18 @@ $ docker-machine create --driver vmwarefusion --vmwarefusion-cpu-count "4" --vmw
 
 $ docker-machine create --driver virtualbox --virtualbox-cpu-count "4" --virtualbox-disk-size "60000" --virtualbox-memory "8192" karthik
 
+$ docker-machine upgrade karthik sapiras
+```
+
+```sh
+$ docker-machine ssh dugorim
+$ sudo -i
+$ apt-cache policy docker-engine
+$ apt-get install docker-engine=1.12.2-0~wily
+$ apt-get install docker-engine=1.12.0-0~wily
+$ apt-get install docker-engine=1.12.2~rc3-0~wily
+```
+Install a particular version of the docker engine on a particular docker machine
 
 ---------------------------------------------
 Configuring Swarm Mode
