@@ -69,15 +69,14 @@ $ docker volume ls -qf dangling=true | xargs docker volume rm
 
 ## Docker Client
 
-* > $ docker run -d -p 3000:80 -v /var/www --name mycontainer kitematic/hello-world
-
-    The `docker run` command spins off a running container out of a Docker Image.
-    * The `-p` flag exposes port 80 on the **Docker Container** to port 3000 on the **Docker Machine**
-    * The `-d` flag runs the container in detached mode
-    * The `-v` flag specifies a volume
-    * The `--name` flag labels the container
-    <br/><br/>
-
+```sh
+$ docker run -d -p 3000:80 -v /var/www --name mycontainer kitematic/hello-world
+```
+The `docker run` command spins off a running container out of a Docker Image.
+* The `-p` flag exposes port 80 on the **Docker Container** to port 3000 on the **Docker Machine**
+* The `-d` flag runs the container in detached mode
+* The `-v` flag specifies a volume
+* The `--name` flag labels the container
 
 ```sh
 $ docker ps
@@ -95,11 +94,13 @@ $ docker images -a
 $ docker rmi 32de
 ```
 
-`$ docker build -t saronia/saronia-frontend -f Dockerfile.nginx --no-cache .`
-  * The `-t` flag specifies tags for the image build
-  * The `-f` flag specifies a non-standard Dockerfile path and/or name
-  * The `--no-cache` would build the container from scratch w/o leveraging the cache
-  * The `.` represents the build context
+```sh
+$ docker build -t saronia/saronia-frontend -f Dockerfile.nginx --no-cache .
+```
+* The `-t` flag specifies tags for the image build
+* The `-f` flag specifies a non-standard Dockerfile path and/or name
+* The `--no-cache` would build the container from scratch w/o leveraging the cache
+* The `.` represents the build context
 
 ```sh
 $ docker login -e soosap@saronia.io -p secret -u username
