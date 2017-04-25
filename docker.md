@@ -78,26 +78,22 @@ $ docker volume ls -qf dangling=true | xargs docker volume rm
     * The `--name` flag labels the container
     <br/><br/>
 
-* > $ docker ps
 
+```sh
+docker ps
 
-* > $ docker ps -a
+docker ps -a
 
+docker stop mycontainer
 
-* > $ docker stop mycontainer
+docker rm mycontainer
 
+docker images
 
-* > $ docker rm mycontainer
+docker images -a
 
-
-* > $ docker images
-
-
-* > $ docker images -a
-
-
-* > $ docker rmi 32de
-
+docker rmi 32de
+```
 
 * > $ docker build -t saronia/saronia-frontend -f Dockerfile.nginx --no-cache .
 
@@ -130,9 +126,7 @@ $ docker volume ls -qf dangling=true | xargs docker volume rm
 3) Run services in a docker swarm
 4) Update services in a docker swarm
 
----------------------------------------------
-### | Create swarm nodes w/ docker-machine
----------------------------------------------
+### Create swarm nodes w/ docker-machine
 
 ```sh
 $ docker-machine create --driver amazonec2 --amazonec2-region eu-central-1 --amazonec2-zone a --engine-install-url https://experimental.docker.com/ sapiras
@@ -158,9 +152,7 @@ $ apt-get install docker-engine=1.12.2~rc3-0~wily
 ```
 Install a particular version of the docker engine on a particular docker machine
 
----------------------------------------------
-Configuring Swarm Mode
----------------------------------------------
+### Configure swarm mode
 
 Expose PORT 2377 on AWS
 ---------------------------------------------
