@@ -80,44 +80,37 @@ $ docker volume ls -qf dangling=true | xargs docker volume rm
 
 
 ```sh
-docker ps
+$ docker ps
 
-docker ps -a
+$ docker ps -a
 
-docker stop mycontainer
+$ docker stop mycontainer
 
-docker rm mycontainer
+$ docker rm mycontainer
 
-docker images
+$ docker images
 
-docker images -a
+$ docker images -a
 
-docker rmi 32de
+$ docker rmi 32de
 ```
 
-* > $ docker build -t saronia/saronia-frontend -f Dockerfile.nginx --no-cache .
+`$ docker build -t saronia/saronia-frontend -f Dockerfile.nginx --no-cache .`
+  * The `-t` flag specifies tags for the image build
+  * The `-f` flag specifies a non-standard Dockerfile path and/or name
+  * The `--no-cache` would build the container from scratch w/o leveraging the cache
+  * The `.` represents the build context
 
-    * The `-t` flag specifies tags for the image build
-    * The `-f` flag specifies a non-standard Dockerfile path and/or name
-    * The `--no-cache` would build the container from scratch w/o leveraging the cache
-    * The `.` represents the build context
-    <br/><br/>
+```sh
+$ docker login -e soosap@saronia.io -p secret -u username
 
+$ docker push saronia/saronia-frontend:latest
 
-* > $ docker login -e soosap@saronia.io -p secret -u username
+$ docker pull saronia/saronia-frontend:latest
 
-
-* > $ docker push saronia/saronia-frontend:latest
-
-
-* > $ docker pull saronia/saronia-frontend:latest
-
-
-* > $ docker exec d6er4 node dbSeeder.js
-
-    Execute a command on a running container
-
-
+$ docker exec d6er4 node dbSeeder.js
+// Execute a command on a running container
+```
 
 ## Docker Swarm
 
@@ -150,7 +143,7 @@ $ apt-get install docker-engine=1.12.2-0~wily
 $ apt-get install docker-engine=1.12.0-0~wily
 $ apt-get install docker-engine=1.12.2~rc3-0~wily
 ```
-Install a particular version of the docker engine on a particular docker machine
+Install a very specific version of the docker engine on a particular docker machine.
 
 ### Configure swarm mode
 
