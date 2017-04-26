@@ -110,15 +110,17 @@ $ docker push saronia/saronia-frontend:latest
 $ docker pull saronia/saronia-frontend:latest
 
 $ docker exec d6er4 node dbSeeder.js
-// Execute a command on a running container
+# Execute a command on a running container
 ```
 
 ## Docker Swarm
 
-1) Create docker machines w/ latest docker engine install
-2) Configure Swarm Mode
-3) Run services in a docker swarm
-4) Update services in a docker swarm
+- Create docker machines w/ latest docker engine install
+- Configure Swarm Mode
+- Run services in a docker swarm
+- The scheduling process
+- Update services in a docker swarm
+- Teardown
 
 ### Create swarm nodes w/ docker-machine
 
@@ -134,6 +136,7 @@ $ docker-machine create --driver vmwarefusion --vmwarefusion-cpu-count "4" --vmw
 $ docker-machine create --driver virtualbox --virtualbox-cpu-count "4" --virtualbox-disk-size "60000" --virtualbox-memory "8192" karthik
 
 $ docker-machine upgrade karthik sapiras
+# Upgrade the docker engine on an existing machine
 ```
 
 ```sh
@@ -148,29 +151,31 @@ Install a very specific version of the docker engine on a particular docker mach
 
 ### Configure swarm mode
 
-Expose PORT 2377 on AWS
----------------------------------------------
+#### Expose PORT 2377 on AWS
+
 Make sure that the EC2 instances can communicate with each other over PORT 2377. You may have to add a "docker-swarm" Security Group to these instances exposing PORT 2377 to all other instances in that subnet.
 
+#### Elect docker-machine as swarm leader
 
-
-Elect docker-machine as swarm leader
----------------------------------------------
 Look up sapiras-EC2-instance's private IP in AWS console >>>> IMPORTANT <<<<<
 >> 172.31.12.76
 
+```sh
 $ docker-machine ssh sapiras
 $ sudo -i
+```
 
+```sh
 $ docker swarm init --advertise-addr 172.31.12.76:2377 --listen-addr 172.31.12.76:2377
 
-Temporarily copy the respective code snippets in a text file
 $ docker swarm join-token manager
->> docker swarm join --token SWMTKN-1-5ld4vtza74ff4ig81qtxasmiu8yihxhd9r3iad0v9n8k379v0f-f2ujimcc9fyh7rbvms6118dtq 172.31.12.76:2377
+# docker swarm join --token SWMTKN-1-5ld4vtza74ff4ig81qtxasmiu8yihxhd9r3iad0v9n8k379v0f-f2ujimcc9fyh7rbvms6118dtq 172.31.12.76:2377
 
 
 $ docker swarm join-token worker
->> docker swarm join --token SWMTKN-1-2iqgmnrwma84tkpbrnomav1lu9yxe5bt7nibg5kv5h2syvt4ba-4hdzrizahcku15c8qvp30qfny 172.31.12.76:2377
+# docker swarm join --token SWMTKN-1-2iqgmnrwma84tkpbrnomav1lu9yxe5bt7nibg5kv5h2syvt4ba-4hdzrizahcku15c8qvp30qfny 172.31.12.76:2377
+```
+Temporarily copy the respective code snippets in a text file.
 
 
 Join a manager to the swarm, i.e. seetha
@@ -217,19 +222,20 @@ $ apt-get install docker-engine=1.12.3-0~wily
 Congratulations! Docker Swarm is up and running with 2 Manager and 1 Worker Nodes.
 
 
+### Run services in a docker swarm
 
----------------------------------------------
-Run Services in a Docker Swarm
----------------------------------------------
+```sh
 $ docker service create --name dockercloud -p 80:80 --replicas 2 dockercloud/hello-world
-
-$ docker service ps dockercloud
 
 $ docker service tasks <service_name>
 
 $ docker service inspect dockercloud
 
 $ docker service ls
+# List all services that are running on a swarm
+
+$ docker service ps dockercloud
+# Check the status of a service, compare its desired and current state
 
 $ docker service rm <id>
 
@@ -239,6 +245,17 @@ $ docker service update --replicas 3 dockercloud
 $ docker network ls
 $ docker network create --driver overlay psight
 $ docker service create --name psight1 --network psight -p 80:8080 --replicas 2 nigelpoulton/pluralsight-docker-ci
+```
+
+```sh
+$ docker service create \
+--name viz \
+--publish 8090:8080 \
+--mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+--constraint=node.role==manager \
+manomarks/visualizer
+```
+Create a visualization/monitoring service about the state of the cluster.
 
 ---------------------------------------------
 Run Services for SARONIA Docker Swarm
@@ -247,9 +264,11 @@ $ docker network create saronia_haproxy --driver overlay
 $ docker network create saronia_jenkins --driver overlay
 $ docker network create soosap_me --driver overlay
 
+```sh
 # Add the saronia_jenkins network to all services that shall obtain automated rolling updates
 # Add the saronia_haproxy network to all services that shall be accessible through the Internet/through a domain
 # mode global makes sure that one "task (container)" is run on every single "node (Docker Engine)"
+```
 
 $ docker service create \
   --name saronia-haproxy
@@ -294,9 +313,7 @@ $ docker service create \
 
 $ docker service create --name soosap-me --publish 8010:8080 --network saronia_haproxy --network saronia_jenkins --network soosap_me --replicas 2 nigelpoulton/pluralsight-docker-ci
 
----------------------------------------------
-Update Services in a Docker Swarm
----------------------------------------------
+### Update services in a docker swarm
 
 List all nodes(manager/worker) that are part of the swarm. This command can only be run from a manager.
 $ docker node ls
@@ -304,6 +321,36 @@ $ docker node ls
 Promote a worker to a manager (optional)
 $ docker node ls
 $ docker node promote <id>
+
+
+### Teardown
+
+#### Leaving the swarm
+```sh
+$ docker swarm leave --force
+```
+Getting rid of docker swarm mode on a node.
+
+#### Cleaning up nodes that have failed
+```sh
+$ docker node rm worker4
+```
+You can remove a node from the cluster using this command. It can only be achieved w/ nodes that are down or that left the swarm using the above command. A node that is still part of the cluster then can only be force removed w/ the `-f` flag.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
